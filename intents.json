@@ -18,6 +18,6 @@
 		"patterns": ["What is your name", "What should I call you", "Whats your name", "Name?", "Name Please"],
 		"responses": ["I'm Elsa!", "I'm Elsa the chatbot", "You can call me ELsa"],
 		"context_set": ""
-		},
+		}
 		]
 }
