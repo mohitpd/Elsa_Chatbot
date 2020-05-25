@@ -75,12 +75,42 @@ model = tf.keras.Sequential([
 model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
 
 try:
-    model = tf.keras.models.load_model("chatbot_model")
+    model = tf.keras.models.load_model("chatbot_model.h5")
 except:
     model.fit(training,output, epochs=1000, batch_size=8)
-    model.save("chatbot_model")
+    model.save("chatbot_model.h5")
 
-    
+def bag_of_words(s, words):
+    bag = [0 for _ in range(len(words))]
+
+    s_words = nltk.word_tokenize(s)
+    s_words = [stemmer.stem(word.lower()) for word in s_words]
+
+    for se in s_words:
+        for i, w in enumerate(words):
+            if w == se:
+                bag[i] = 1
+
+    return np.array([bag])
+
+def chat():
+    print("Start Talking with the bot (type quit to stop)!")
+    while True:
+        inp = input("You: ")
+        if inp.lower() == "quit":
+            break
+
+        results = model.predict([bag_of_words(inp, words)])
+        results_index = np.argmax(results)
+        tag = labels[results_index]
+        
+        for tg in data["intents"]:
+            if tg["tag"] == tag:
+                responses = tg["responses"]
+
+        print(random.choice(responses))
+
+chat()    
     
 
 
