@@ -9,8 +9,11 @@ import random
 import json
 import pickle
 
+#Data Loaded
 with open("intents.json") as file:
     data = json.load(file)
+
+#Data Processed
 try:
     with open("data.pickle", "rb") as f:
         words, labels, training, output = pickle.load(f)
@@ -65,7 +68,7 @@ except:
 
 tf.compat.v1.reset_default_graph()
 
-# define the keras model
+# The keras model
 model = tf.keras.Sequential([
             tf.keras.layers.Dense(8, activation='relu', input_shape=(len(training[0]),)),
             tf.keras.layers.Dense(8, activation="relu"),
@@ -74,6 +77,7 @@ model = tf.keras.Sequential([
 
 model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
 
+#Training the model
 try:
     model = tf.keras.models.load_model("chatbot_model.h5")
 except:
@@ -93,6 +97,7 @@ def bag_of_words(s, words):
 
     return np.array([bag])
 
+#Execution of ChatBot
 def chat():
     print("Start Talking with the bot (type quit to stop)!")
     while True:
